@@ -4,7 +4,10 @@
     {
         static void Main()
         {
-            var svg = SvgBuilder.New((500, 500)).Build();
+            var svgBuilder = SvgBuilder.New((500, 500));
+            svgBuilder.addRectangle(7, 9, 7, 9, "red", "");
+            
+            var svg = svgBuilder.Build();
 
             Console.Write("Absolute path to save SVG at: ");
             var path = Console.ReadLine() ?? "";
