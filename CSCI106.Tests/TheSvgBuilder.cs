@@ -16,6 +16,7 @@ namespace CSCI106.Tests
             var svgBuilder = SvgBuilder.New((500, 500));
             svgBuilder.addRectangle(7, 9, 1, 2, "red", "");
             
+            Assert.That(() => svgBuilder.addRectangle(-10, -20, 1, 1, " ", " "), Throws.ArgumentException);
             var svg = svgBuilder.Build(); 
 
             Assert.That(svg, Contains.Substring("rect"));
@@ -23,6 +24,7 @@ namespace CSCI106.Tests
             Assert.That(svg, Contains.Substring("height=\"2\""));
             Assert.That(svg, Contains.Substring("x=\"7\""));
             Assert.That(svg, Contains.Substring("y=\"9\""));
+
 
         }
     }

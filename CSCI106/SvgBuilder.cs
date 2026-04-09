@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace CSCI106
+﻿namespace CSCI106
 {
     public class SvgBuilder
     {
@@ -29,8 +27,27 @@ namespace CSCI106
                 + Buffer
                 + SVG_FOOTER;
 
-            public void addRectangle(int x, int y, int width, int height, string fill, string stroke)
+        private bool IsValidRectangle(int x, int y, int width, int height)
         {
+            if (width <= 0 || height <= 0)
+                return false;
+
+            if (x + width <= 0 || y + height <= 0)
+                return false;
+
+            if (x >= Width || y >= Height)
+                return false;
+
+            return true;
+        }
+
+        public void addRectangle(int x, int y, int width, int height, string fill, string stroke)
+        {
+            if (!IsValidRectangle(x, y, width, height))
+            {
+                throw new ArgumentException("Invalid rectangle: must have positive dimensions and be visible in the SVG viewport.");
+            }
+
             Buffer += $"<rect x=\"{x}\" y=\"{y}\" width=\"{width}\" height=\"{height}\" fill=\"{fill}\" stroke=\"{stroke}\" />";
         }
     }
