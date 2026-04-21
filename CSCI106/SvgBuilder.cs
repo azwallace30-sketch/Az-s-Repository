@@ -1,4 +1,6 @@
-﻿namespace CSCI106
+﻿using System;
+
+namespace CSCI106
 {
     public class SvgBuilder
     {
@@ -14,7 +16,7 @@
         {
             var (width, height) = dimensions;
 
-            return new()
+            return new SvgBuilder
             {
                 Buffer = string.Empty,
                 Width = width,
@@ -32,23 +34,37 @@
             if (width <= 0 || height <= 0)
                 return false;
 
+            // Completely off screen (left/top)
             if (x + width <= 0 || y + height <= 0)
                 return false;
 
+            // Starts outside (right/bottom)
             if (x >= Width || y >= Height)
+                return false;
+
+            // Goes outside bounds
+            if (x + width > Width || y + height > Height)
                 return false;
 
             return true;
         }
 
-        public void addRectangle(int x, int y, int width, int height, string fill, string stroke)
+        public void AddRectangle(int x, int y, int width, int height, string fill, string stroke)
         {
             if (!IsValidRectangle(x, y, width, height))
             {
-                throw new ArgumentException("Invalid rectangle: must have positive dimensions and be visible in the SVG viewport.");
+                throw new ArgumentException("Invalid rectangle: must have positive dimensions and be inside the SVG.");
             }
 
-            Buffer += $"<rect x=\"{x}\" y=\"{y}\" width=\"{width}\" height=\"{height}\" fill=\"{fill}\" stroke=\"{stroke}\" />";
+            Buffer += $"<rect x=\"{x}\" y=\"{y}\" width=\"{width}\" height=\"{height}\" fill=\"{fill}\""
+                   + (string.IsNullOrWhiteSpace(stroke) ? "" : $" stroke=\"{stroke}\"")
+                   + " />";
+        }
+
+        // 🔗 Allows parser to plug into builder
+        public void AddRectangle(Rectangle rect)
+        {
+            AddRectangle(rect.X, rect.Y, rect.Width, rect.Height, rect.Fill, rect.Stroke);
         }
     }
 }
