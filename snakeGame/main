@@ -1,0 +1,42 @@
+// Source - https://stackoverflow.com/a/61532623
+// Posted by littlerufe
+// Retrieved 2026-04-28, License - CC BY-SA 4.0
+
+private static void Main()
+{
+    Console.CursorVisible = false;
+    var snake = new Snake(new Point(Console.WindowWidth / 2, Console.WindowHeight / 2), 
+        5, '*');
+
+    snake.Draw();
+
+    while (true)
+    {
+        var ch = Console.ReadKey(true).Key;
+        if (ch == ConsoleKey.Q) break;
+
+        switch (ch)
+        {
+            case ConsoleKey.W:
+            case ConsoleKey.UpArrow:
+                snake.Move(Snake.Direction.Up);
+                break;
+            case ConsoleKey.S:
+            case ConsoleKey.DownArrow:
+                snake.Move(Snake.Direction.Down);
+                break;
+            case ConsoleKey.A:
+            case ConsoleKey.LeftArrow:
+                snake.Move(Snake.Direction.Left);
+                break;
+            case ConsoleKey.D:
+            case ConsoleKey.RightArrow:
+                snake.Move(Snake.Direction.Right);
+                break;
+        }
+    }
+
+    Console.CursorVisible = true;
+
+    GetKeyFromUser("\nDone! Press any key to exit...");
+}
